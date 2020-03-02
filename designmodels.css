@@ -1,0 +1,26 @@
+/* Relevance group 2 (below average relevance) */
+.R2.story-h
+{
+    font-weight: 400;
+}
+
+.R2.meta-bar-cat
+{
+    background-color: #98585e;
+}
+
+/* Relevance group 1 (least relevance) */
+.R1.story-txt p, .R1.story.story-float-img .story-img-link
+{
+    display: none;
+}
+
+.R1.story-h
+{
+    font-weight: 400;
+}
+
+.R1.meta-bar-cat
+{
+    background-color: #808080;
+}
