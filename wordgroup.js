@@ -1,5 +1,20 @@
 //console.log(stemmer("President", true));
 
+var topWords = {
+    // word: clickcount
+    // ex: presid: 2
+}
+
+if (typeof(Storage) !== "undefined") {
+    if (localStorage.getItem('topWords') !== "" || localStorage.getItem('topWords') !== null)
+    {
+        
+    }
+    else {
+        localStorage.setItem("topWords", "");
+    }
+} else {}
+
 function removeStopWords(str)
 {
     // From https://gist.github.com/sebleier/554280#gistcomment-2838837
@@ -31,15 +46,24 @@ document.addEventListener('click', function(e) {
     do {
         if (regex.exec(target.className))
         {
-            // Adds headline words to variable
-            if (typeof(Storage) !== "undefined") {
-                localStorage.setItem("test", text);
-            } else {}
+            doStorage(text);
         }
         target = target.parentNode;
-    } while (target) {
-        console.log("nope");
-    }  
+    } while (target) {}  
     
 }, false);
 
+// Two functions are created to store locally properly (https://stackoverflow.com/a/6846158)
+function doStorage(str)
+{
+            doStorage2(str);
+}
+
+function doStorage2(str2)
+{
+    // Adds headline words to variable
+    if (typeof(Storage) !== "undefined") 
+    {
+        localStorage.setItem("test2", str2);
+    } else {}
+}
