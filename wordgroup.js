@@ -1,9 +1,6 @@
 //console.log(stemmer("President", true));
 
-var topWords = {
-    // word: clickcount
-    // ex: presid: 2
-}
+var topWords = [];
 
 // Sets total clicks to 0 if user has no clicks
 if (!localStorage.getItem("totalClicks"))
@@ -33,7 +30,7 @@ function cleanHeadline(str)
     for (i = 0; i < words.length; i++)
     {
         // Separate words in sentence by various symbols
-        var wordClean = words[i].split(/[\d,.:;\s'‘’–?%!&-]/g).join("");
+        var wordClean = words[i].split(/[\d,.:;\s'‘’–—?%!&-]/g).join("");
         if (!stopwords.includes(wordClean))
         {
             wordClean = stemmer(wordClean, false); // Stem word
@@ -100,32 +97,38 @@ function doStorage2(str2)
         }      
         
         // Convert clicked headline to array
-        var rawWords = cleanHeadline(str2).split(" ");
-        for (i = 0; i < rawWords.length; i++)
+        var headlineWords = cleanHeadline(str2).split(" ");
+        for (i = 0; i < headlineWords.length; i++)
         {
-            if (rawWords[i] == "")
+            if (headlineWords[i] == "")
             {
-                rawWords.splice([i], 1); // Remove empty keys
+                headlineWords.splice([i], 1); // Remove empty keys
             } else {}
         }
 
-        // Add words in headline to user's top words
-        for (i = 0; i < rawWords.length; i++)
+        // Convert top words local storage string to array if storage is not null
+        if (localStorage.getItem("topWords"))
+        {
+            topWords = JSON.parse(localStorage.getItem("topWords"));
+        }
+        
+        // Insert clicked words into top words
+        for (i = 0; i < headlineWords.length; i++)
+        {
+            // Remove value if it exists in array and unshift it 
+            if (topWords.includes(headlineWords[i]))
             {
-                topWords[rawWords[i]] = (topWords[rawWords[i]] || 0) + 1; 
-                console.log(topWords);
+                var position = topWords.indexOf(headlineWords[i]);
+                topWords.splice(position, 1);
+                topWords.unshift(headlineWords[i]);
             }
-
-        // if (parseInt(localStorage.getItem("totalClicks") > 3))
-        // {
-        //     for (i = 0; i < rawWords.length; i++)
-        //     {
-        //         topWords[i] = (topWords[i] || 0) + 1; 
-        //         console.log(topWords);
-        //     }
-        // }
-
-        console.log(rawWords);
+            else
+            {
+                topWords.unshift(headlineWords[i]);
+            }
+            console.log(topWords);
+            localStorage.setItem("topWords", JSON.stringify(topWords)); // Need to convert array to string / vice versa when storing retrieving top words
+        }
 
         // Adds headline words to local storage
         localStorage.setItem("clickedHeadline", cleanHeadline(str2));
