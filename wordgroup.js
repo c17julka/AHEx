@@ -41,12 +41,35 @@ function getHeadlineWords()
     var testarray = [];
 
     for (y = 1; y < headlines.length; y++)
+{
+    let rawWords = cleanHeadline(headlines[y].innerText);
+    topWords = JSON.parse(localStorage.getItem("topWords"));
+
+    console.log(rawWords);
+    
+    // Check if any headline words match with user's top words
+    for (c = 0; c < rawWords.length; c++)
     {
-        let rawWords = cleanHeadline(headlines[y].innerText);
-        //console.log(designGroup1(headlines[y]));
-        testarray.push(rawWords);  
+        for (x = 0; x < topWords.length; x++)
+        {
+            if (rawWords[c] == topWords[x])
+            {
+                if (x < 10) // Group 2 relevance
+                {
+                    designGroup1(headlines[y]);
+                }
+                else
+                {
+                }
+                
+            }
+            else {}
+            
+        }
     }
-    console.table(testarray);
+
+    testarray.push(rawWords);  
+}
 }
 
 var headlines = document.getElementsByClassName("story-h");
@@ -57,25 +80,34 @@ for (y = 1; y < headlines.length; y++)
     let rawWords = cleanHeadline(headlines[y].innerText);
     topWords = JSON.parse(localStorage.getItem("topWords"));
 
-    // for (c = 0; c < rawWords.length; c++)
-    // {
-    //     for (x = 0; x < topWords.length / 3; x++)
-    //     {
-    //         if (rawWords[c] == topWords[x])
-    //         {
-    //             //designGroup1(headlines[y]);
-    //             designGroup1(rawWords);
-    //         }
-            
-    //     }
-    // }
     console.log(rawWords);
     
-    //designGroup1(headlines[y]);
+    // Check if any headline words match with user's top words
+    for (c = 0; c < rawWords.length; c++)
+    {
+        for (x = 0; x < topWords.length; x++)
+        {
+            if (rawWords[c] == topWords[x])
+            {
+                if (x < 10) // Group 2 relevance
+                {
+                    designGroup1(headlines[y]);
+                }
+                else
+                {
+                }
+                
+            }
+            else {}
+            
+        }
+    }
+
     testarray.push(rawWords);  
 }
 //console.table(testarray);
 
+// Group 1 relevance design group
 function designGroup1(elem)
 {
     const className = "story-float-img";
@@ -85,7 +117,8 @@ function designGroup1(elem)
     do {
         if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
         {
-            elem.classList.add("R1");
+            elem.querySelector(".story-img-link").style.display="none";
+            //elem.classList.add("R1");
         }
         elem = elem.parentNode;
     } while (elem) {} 
