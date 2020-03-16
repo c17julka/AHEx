@@ -13,10 +13,10 @@ function cleanHeadline(str)
     for (i = 0; i < words.length; i++)
     {
         // Separate words in sentence by various symbols
-        let wordClean = words[i].split(/[\d,.:;\s'‘’–—?%!&-]/g).join("");
+        let wordClean = words[i].split(/[\d,.:;\s'‘’–—?%!&	-]/g).join("");
         wordClean = wordClean.toLowerCase();
 
-        if (!stopwords.includes(wordClean) && wordClean !== "")
+        if (!stopwords.includes(wordClean) && wordClean !== null && wordClean !== "" )
         {
             wordClean = stemmer(wordClean, false); // Stem word
             result.push(wordClean);
@@ -24,35 +24,73 @@ function cleanHeadline(str)
         }
     }
 
-    return(result);
+    if (result != null)
+    {
+        return(result);
+    }
+    else
+    {
+        console.log("Empty string");
+    }
+   
 }
 
 function getHeadlineWords()
 {   
-    const headlines = document.getElementsByClassName(className);
-    const testarray = [];
+    var headlines = document.getElementsByClassName("story-h");
+    var testarray = [];
 
-    for (i = 3; i < headlines.length; i++)
+    for (y = 1; y < headlines.length; y++)
     {
-        let rawWords = headlines[i].innerText.split(" ");
-        testarray += rawWords;
+        let rawWords = cleanHeadline(headlines[y].innerText);
+        //console.log(designGroup1(headlines[y]));
+        testarray.push(rawWords);  
     }
-    console.log(testarray);
+    console.table(testarray);
 }
-//let rawWords = cleanHeadline(headlines[i].innerText);
 
-//
 var headlines = document.getElementsByClassName("story-h");
 var testarray = [];
 
-for (i = 2; i < headlines.length; i++)
+for (y = 1; y < headlines.length; y++)
 {
-    console.log(headlines[i].innerText);
-    let rawWords = headlines[i].innerText.split(" ");
-    testarray += rawWords;
+    let rawWords = cleanHeadline(headlines[y].innerText);
+    topWords = JSON.parse(localStorage.getItem("topWords"));
+
+    // for (c = 0; c < rawWords.length; c++)
+    // {
+    //     for (x = 0; x < topWords.length / 3; x++)
+    //     {
+    //         if (rawWords[c] == topWords[x])
+    //         {
+    //             //designGroup1(headlines[y]);
+    //             designGroup1(rawWords);
+    //         }
+            
+    //     }
+    // }
+    console.log(rawWords);
+    
+    //designGroup1(headlines[y]);
+    testarray.push(rawWords);  
 }
-console.log(testarray);
-//
+//console.table(testarray);
+
+function designGroup1(elem)
+{
+    const className = "story-float-img";
+    const removeClassName = "story-sponsored";
+    const regex = new RegExp("\\b" + className + "\\b");
+    
+    do {
+        if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
+        {
+            elem.classList.add("R1");
+        }
+        elem = elem.parentNode;
+    } while (elem) {} 
+    
+}
 
 // Get clicked headline
 document.addEventListener('mousedown', function(e) {
@@ -128,7 +166,7 @@ function storeWords2(str2)
             localStorage.setItem("topWords", JSON.stringify(topWords)); // Need to convert array to string / vice versa when storing retrieving top words
         } else {}
 
-        //console.table(topWords);
+        console.table(topWords);
     }
 
 }
