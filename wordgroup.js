@@ -1,6 +1,8 @@
 //console.log(stemmer("President", true));
 
 var topWords = [];
+var topWordsMaxLength = 40;
+var highestTopWords = 10;
 
 function cleanHeadline(str)
 {
@@ -16,7 +18,7 @@ function cleanHeadline(str)
         let wordClean = words[i].split(/[\d,.:;\s'‘’–—?%!&	-]/g).join("");
         wordClean = wordClean.toLowerCase();
 
-        if (!stopwords.includes(wordClean) && wordClean !== null && wordClean !== "" )
+        if (!stopwords.includes(wordClean) && wordClean != null && wordClean != "")
         {
             wordClean = stemmer(wordClean, false); // Stem word
             result.push(wordClean);
@@ -37,44 +39,61 @@ function cleanHeadline(str)
 
 function getHeadlineWords()
 {   
-    var headlines = document.getElementsByClassName("story-h");
-    var testarray = [];
+    const headlines = document.getElementsByClassName("story-h");
 
+    // Checks all headlines on the website
     for (y = 1; y < headlines.length; y++)
-{
-    let rawWords = cleanHeadline(headlines[y].innerText);
-    topWords = JSON.parse(localStorage.getItem("topWords"));
-
-    console.log(rawWords);
-    
-    // Check if any headline words match with user's top words
-    for (c = 0; c < rawWords.length; c++)
     {
-        for (x = 0; x < topWords.length; x++)
+        let rawWords = cleanHeadline(headlines[y].innerText);
+        topWords = JSON.parse(localStorage.getItem("topWords"));
+
+        console.log(rawWords);
+        
+        // Check if any headline words match with user's lower top words
+        checklowertopwords:
+        for (c = 0; c < rawWords.length; c++)
         {
-            if (rawWords[c] == topWords[x])
+            for (x = highestTopWords; x < topWords.length; x++)
             {
-                if (x < 10) // Group 2 relevance
+                if (rawWords[c] == topWords[x])
                 {
-                    designGroup1(headlines[y]);
-                }
-                else
+                    design(headlines[y], 2); // Group 2 relevance
+                    break checklowertopwords;
+                } 
+                else 
                 {
-                }
+                    design(headlines[y], 1); // Group 1 (low) relevance
+                }       
                 
             }
-            else {}
+            
+        }
+        
+        // Check if any headline words match with user's highest top words
+        checktopwords:
+        for (c = 0; c < rawWords.length; c++)
+        {
+            for (x = 0; x < highestTopWords; x++)
+            {
+                if (rawWords[c] == topWords[x])
+                {
+                    design(headlines[y], 3); // Group 3 (high) relevance
+                    break checktopwords;
+                }
+                else 
+                {
+                    
+                }         
+                
+            }
             
         }
     }
-
-    testarray.push(rawWords);  
-}
 }
 
 var headlines = document.getElementsByClassName("story-h");
-var testarray = [];
 
+// Checks all headlines on the website
 for (y = 1; y < headlines.length; y++)
 {
     let rawWords = cleanHeadline(headlines[y].innerText);
@@ -82,33 +101,49 @@ for (y = 1; y < headlines.length; y++)
 
     console.log(rawWords);
     
-    // Check if any headline words match with user's top words
+    // Check if any headline words match with user's lower top words
+    checklowertopwords:
     for (c = 0; c < rawWords.length; c++)
     {
-        for (x = 0; x < topWords.length; x++)
+        for (x = highestTopWords; x < topWords.length; x++)
         {
             if (rawWords[c] == topWords[x])
             {
-                if (x < 10) // Group 2 relevance
-                {
-                    designGroup1(headlines[y]);
-                }
-                else
-                {
-                }
-                
-            }
-            else {}
+                design(headlines[y], 2); // Group 2 relevance
+                break checklowertopwords;
+            } 
+            else 
+            {
+                design(headlines[y], 1); // Group 1 (low) relevance
+            }       
             
         }
+        
     }
-
-    testarray.push(rawWords);  
+    
+    // Check if any headline words match with user's highest top words
+    checktopwords:
+    for (c = 0; c < rawWords.length; c++)
+    {
+        for (x = 0; x < highestTopWords; x++)
+        {
+            if (rawWords[c] == topWords[x])
+            {
+                design(headlines[y], 3); // Group 3 (high) relevance
+                break checktopwords;
+            }
+            else 
+            {
+                
+            }         
+            
+        }
+        
+    }
 }
-//console.table(testarray);
 
-// Group 1 relevance design group
-function designGroup1(elem)
+// Fetches correct parent of selected headline
+function design(elem, groupNo)
 {
     const className = "story-float-img";
     const removeClassName = "story-sponsored";
@@ -117,12 +152,68 @@ function designGroup1(elem)
     do {
         if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
         {
-            elem.querySelector(".story-img-link").style.display="none";
-            //elem.classList.add("R1");
+            if (groupNo == 1) // Group 1 (low) relevance
+            {
+                group1(elem);
+            }
+            else if (groupNo == 2) // Group 2 relevance
+            {
+                group2(elem);
+            }
+            else // Group 3 (high) relevance
+            {
+                group3(elem);
+            }
+            
+            
         }
         elem = elem.parentNode;
     } while (elem) {} 
     
+}
+
+// Group 1 (low) relevance design
+function group1(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
+
+    pic.style.display="none";
+    text.style.display="none";
+    headline.style.fontWeight="400";
+    subjectpic.style.backgroundColor="#808080";
+}
+
+// Group 2 relevance design
+function group2(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
+
+    pic.style.display="none";
+    text.style.display="block";
+    headline.style.fontWeight="400";
+    subjectpic.style.backgroundColor="#98585e";
+
+}
+
+// Group 3 (high) relevance design
+function group3(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
+
+    pic.style.display="block";
+    text.style.display="block";
+    headline.style.fontWeight="800";
+    subjectpic.style.backgroundColor="#e11c2e";
+
 }
 
 // Get clicked headline
@@ -189,10 +280,10 @@ function storeWords2(str2)
     }
 
     // Keep top words under certain length
-    if (topWords.length >= 60)
+    if (topWords.length >= topWordsMaxLength)
     {
-        let del = topWords.length - 60;
-        topWords.splice(59, del);
+        let del = topWords.length - topWordsMaxLength;
+        topWords.splice(topWordsMaxLength-1, del);
 
         if (typeof localStorage !== 'undefined')
         {
