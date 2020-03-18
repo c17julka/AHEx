@@ -152,6 +152,8 @@ function design(elem, groupNo)
     do {
         if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
         {
+            //if (annotation == 1)
+
             if (groupNo == 1) // Group 1 (low) relevance
             {
                 group1(elem);
@@ -164,6 +166,8 @@ function design(elem, groupNo)
             {
                 group3(elem);
             }
+
+            //else
             
             
         }
@@ -214,6 +218,37 @@ function group3(elem)
     headline.style.fontWeight="800";
     subjectpic.style.backgroundColor="#e11c2e";
 
+}
+
+function group1Hiding(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+
+    pic.style.display="none";
+    text.style.display="none";
+}
+
+function group2Hiding(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+
+    pic.style.display="none";
+    text.style.display="block";
+}
+
+function group3Hiding(elem)
+{
+    const pic = elem.querySelector(".story-img-link");
+    const text = elem.querySelector(".story-txt");
+
+    pic.style.display="block";
+    text.style.display="block";
+}
+
+function createBox()
+{
 }
 
 // Get clicked headline
