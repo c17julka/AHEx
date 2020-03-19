@@ -93,53 +93,59 @@ function getHeadlineWords()
 
 var headlines = document.getElementsByClassName("story-h");
 
-// Checks all headlines on the website
-for (y = 1; y < headlines.length; y++)
-{
-    let rawWords = cleanHeadline(headlines[y].innerText);
-    topWords = JSON.parse(localStorage.getItem("topWords"));
+// // Checks all headlines on the website
+// for (y = 1; y < headlines.length; y++)
+// {
+//     let rawWords = cleanHeadline(headlines[y].innerText);
+//     topWords = JSON.parse(localStorage.getItem("topWords"));
 
-    console.log(rawWords);
+//     console.log(rawWords);
     
-    // Check if any headline words match with user's lower top words
-    checklowertopwords:
-    for (c = 0; c < rawWords.length; c++)
-    {
-        for (x = highestTopWords; x < topWords.length; x++)
-        {
-            if (rawWords[c] == topWords[x])
-            {
-                design(headlines[y], 2); // Group 2 relevance
-                break checklowertopwords;
-            } 
-            else 
-            {
-                design(headlines[y], 1); // Group 1 (low) relevance
-            }       
+//     // Check if any headline words match with user's lower top words
+//     checklowertopwords:
+//     for (c = 0; c < rawWords.length; c++)
+//     {
+//         for (x = highestTopWords; x < topWords.length; x++)
+//         {
+//             if (rawWords[c] == topWords[x])
+//             {
+//                 design(headlines[y], 2); // Group 2 relevance
+//                 break checklowertopwords;
+//             } 
+//             else 
+//             {
+//                 design(headlines[y], 1); // Group 1 (low) relevance
+//             }       
             
-        }
+//         }
         
-    }
+//     }
     
-    // Check if any headline words match with user's highest top words
-    checktopwords:
-    for (c = 0; c < rawWords.length; c++)
-    {
-        for (x = 0; x < highestTopWords; x++)
-        {
-            if (rawWords[c] == topWords[x])
-            {
-                design(headlines[y], 3); // Group 3 (high) relevance
-                break checktopwords;
-            }
-            else 
-            {
+//     // Check if any headline words match with user's highest top words
+//     checktopwords:
+//     for (c = 0; c < rawWords.length; c++)
+//     {
+//         for (x = 0; x < highestTopWords; x++)
+//         {
+//             if (rawWords[c] == topWords[x])
+//             {
+//                 design(headlines[y], 3); // Group 3 (high) relevance
+//                 break checktopwords;
+//             }
+//             else 
+//             {
                 
-            }         
+//             }         
             
-        }
+//         }
         
-    }
+//     }
+// }
+
+if (document.readyState == "complete" || document.readyState == "loaded" || document.readyState == "interactive")
+{
+    console.log("TJA");
+    getHeadlineWords();
 }
 
 // Fetches correct parent of selected headline
@@ -251,8 +257,25 @@ function createBox()
 {
 }
 
+document.addEventListener('mouseup', function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (target.classList.contains("load-more-btn") || target.classList.contains("tabs-desktop"))
+    {
+        if (document.readyState == "complete")
+        {
+            console.log("TJA");
+            getHeadlineWords();
+        }
+        console.log("TJA");
+    }
+
+}, false);
+
+
 // Get clicked headline
-document.addEventListener('mousedown', function(e) {
+document.addEventListener('click', function(e) {
     e = e || window.event;
     var target = e.target || e.srcElement;
     var text = target.textContent || target.innerText; 
