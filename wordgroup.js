@@ -197,6 +197,8 @@ function group3Hiding(elem)
 
 function createBox()
 {
+    var checkbox = document.createElement("div");
+    document.body.appendChild(checkbox);
 }
 
 // Checks headlines after loading new ones ("Load more stories" btn, or switching news tab)
