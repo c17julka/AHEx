@@ -1,9 +1,9 @@
-//console.log(stemmer("President", true));
-
+// Change these variables to change how much relevance filtering should be done
 var topWords = [];
-var topWordsMaxLength = 40;
+var topWordsMaxLength = 30;
 var highestTopWords = 10;
 
+// Remove stop words and stem headline sentences
 function cleanHeadline(str)
 {
     // From https://gist.github.com/sebleier/554280#gistcomment-2838837
@@ -37,6 +37,7 @@ function cleanHeadline(str)
    
 }
 
+// Adapt all headlines on website
 function getHeadlineWords()
 {   
     const headlines = document.getElementsByClassName("story-h");
@@ -46,8 +47,6 @@ function getHeadlineWords()
     {
         let rawWords = cleanHeadline(headlines[y].innerText);
         topWords = JSON.parse(localStorage.getItem("topWords"));
-
-        console.log(rawWords);
         
         // Check if any headline words match with user's lower top words
         checklowertopwords:
@@ -89,63 +88,6 @@ function getHeadlineWords()
             
         }
     }
-}
-
-var headlines = document.getElementsByClassName("story-h");
-
-// // Checks all headlines on the website
-// for (y = 1; y < headlines.length; y++)
-// {
-//     let rawWords = cleanHeadline(headlines[y].innerText);
-//     topWords = JSON.parse(localStorage.getItem("topWords"));
-
-//     console.log(rawWords);
-    
-//     // Check if any headline words match with user's lower top words
-//     checklowertopwords:
-//     for (c = 0; c < rawWords.length; c++)
-//     {
-//         for (x = highestTopWords; x < topWords.length; x++)
-//         {
-//             if (rawWords[c] == topWords[x])
-//             {
-//                 design(headlines[y], 2); // Group 2 relevance
-//                 break checklowertopwords;
-//             } 
-//             else 
-//             {
-//                 design(headlines[y], 1); // Group 1 (low) relevance
-//             }       
-            
-//         }
-        
-//     }
-    
-//     // Check if any headline words match with user's highest top words
-//     checktopwords:
-//     for (c = 0; c < rawWords.length; c++)
-//     {
-//         for (x = 0; x < highestTopWords; x++)
-//         {
-//             if (rawWords[c] == topWords[x])
-//             {
-//                 design(headlines[y], 3); // Group 3 (high) relevance
-//                 break checktopwords;
-//             }
-//             else 
-//             {
-                
-//             }         
-            
-//         }
-        
-//     }
-// }
-
-if (document.readyState == "complete" || document.readyState == "loaded" || document.readyState == "interactive")
-{
-    console.log("TJA");
-    getHeadlineWords();
 }
 
 // Fetches correct parent of selected headline
@@ -257,19 +199,31 @@ function createBox()
 {
 }
 
+// Checks headlines after loading new ones ("Load more stories" btn, or switching news tab)
 document.addEventListener('mouseup', function(e) {
     e = e || window.event;
     var target = e.target || e.srcElement;
 
-    if (target.classList.contains("load-more-btn") || target.classList.contains("tabs-desktop"))
+    const length = document.getElementsByClassName("story-h").length;
+
+    // Adapts new headlines after waiting for the new headlines to load
+    function checkNewHeadlines()
     {
-        if (document.readyState == "complete")
+        if (document.getElementsByClassName("story-h").length > length)
         {
-            console.log("TJA");
             getHeadlineWords();
         }
-        console.log("TJA");
+        else
+        {
+            setTimeout(checkNewHeadlines, 10);
+        }
     }
+
+    if (target.classList.contains("load-more-btn") || target.classList.contains("tabs-desktop"))
+    {
+        setTimeout(checkNewHeadlines, 10);
+    }
+    else {}
 
 }, false);
 
@@ -351,4 +305,9 @@ function storeWords2(str2)
         console.table(topWords);
     }
 
+}
+
+if (document.readyState == "complete")
+{
+    getHeadlineWords();
 }
