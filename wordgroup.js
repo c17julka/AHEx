@@ -46,47 +46,56 @@ function getHeadlineWords()
     for (y = 1; y < headlines.length; y++)
     {
         let rawWords = cleanHeadline(headlines[y].innerText);
-        topWords = JSON.parse(localStorage.getItem("topWords"));
-        
-        // Check if any headline words match with user's lower top words
-        checklowertopwords:
-        for (c = 0; c < rawWords.length; c++)
+        if (topWords !== null)
         {
-            for (x = highestTopWords; x < topWords.length; x++)
+            if (typeof localStorage !== 'undefined')
             {
-                if (rawWords[c] == topWords[x])
+                if (localStorage.getItem("topWords") !== null)
                 {
-                    design(headlines[y], 2); // Group 2 relevance
-                    break checklowertopwords;
-                } 
-                else 
-                {
-                    design(headlines[y], 1); // Group 1 (low) relevance
-                }       
-                
-            }
-            
-        }
-        
-        // Check if any headline words match with user's highest top words
-        checktopwords:
-        for (c = 0; c < rawWords.length; c++)
-        {
-            for (x = 0; x < highestTopWords; x++)
-            {
-                if (rawWords[c] == topWords[x])
-                {
-                    design(headlines[y], 3); // Group 3 (high) relevance
-                    break checktopwords;
+                    topWords = JSON.parse(localStorage.getItem("topWords"));
                 }
-                else 
+                else {}
+            } else {}
+
+            // Check if any headline words match with user's lower top words
+            checklowertopwords:
+            for (c = 0; c < rawWords.length; c++)
+            {
+                for (x = highestTopWords; x < topWords.length; x++)
                 {
+                    if (rawWords[c] == topWords[x])
+                    {
+                        design(headlines[y], 2); // Group 2 relevance
+                        break checklowertopwords;
+                    } 
+                    else 
+                    {
+                        design(headlines[y], 1); // Group 1 (low) relevance
+                    }       
                     
-                }         
+                }
                 
             }
             
+            // Check if any headline words match with user's highest top words
+            checktopwords:
+            for (c = 0; c < rawWords.length; c++)
+            {
+                for (x = 0; x < highestTopWords; x++)
+                {
+                    if (rawWords[c] == topWords[x])
+                    {
+                        design(headlines[y], 3); // Group 3 (high) relevance
+                        break checktopwords;
+                    }
+                    else {}         
+                    
+                }
+                
+            }
         }
+        else {}
+        
     }
 }
 
@@ -96,26 +105,43 @@ function design(elem, groupNo)
     const className = "story-float-img";
     const removeClassName = "story-sponsored";
     const regex = new RegExp("\\b" + className + "\\b");
+
+    var checkbox = document.getElementById("checkbox");
     
     do {
         if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
         {
-            //if (annotation == 1)
+            if (checkbox.value == "Hiding + Annotation")
+            {
+                if (groupNo == 1) // Group 1 (low) relevance
+                {
+                    group1(elem);
+                }
+                else if (groupNo == 2) // Group 2 relevance
+                {
+                    group2(elem);
+                }
+                else // Group 3 (high) relevance
+                {
+                    group3(elem);
+                }
+            }
 
-            if (groupNo == 1) // Group 1 (low) relevance
+            else if (checkbox.value == "Hiding")
             {
-                group1(elem);
+                if (groupNo == 1) // Group 1 (low) relevance
+                {
+                    group1Hiding(elem);
+                }
+                else if (groupNo == 2) // Group 2 relevance
+                {
+                    group2Hiding(elem);
+                }
+                else // Group 3 (high) relevance
+                {
+                    group3Hiding(elem);
+                }
             }
-            else if (groupNo == 2) // Group 2 relevance
-            {
-                group2(elem);
-            }
-            else // Group 3 (high) relevance
-            {
-                group3(elem);
-            }
-
-            //else
             
             
         }
@@ -168,41 +194,92 @@ function group3(elem)
 
 }
 
+// Groups with only hiding design
 function group1Hiding(elem)
 {
     const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
+    const text = elem.querySelector(".story-txt"); 
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
 
     pic.style.display="none";
     text.style.display="none";
+    headline.style.fontWeight="800";
+    subjectpic.style.backgroundColor="#e11c2e";
 }
 
 function group2Hiding(elem)
 {
     const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
+    const text = elem.querySelector(".story-txt"); 
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
 
     pic.style.display="none";
     text.style.display="block";
+    headline.style.fontWeight="800";
+    subjectpic.style.backgroundColor="#e11c2e";
 }
 
 function group3Hiding(elem)
 {
     const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
+    const text = elem.querySelector(".story-txt"); 
+    const headline = elem.querySelector(".story-h");
+    const subjectpic = elem.querySelector(".meta-bar-cat");
 
     pic.style.display="block";
     text.style.display="block";
+    headline.style.fontWeight="800";
+    subjectpic.style.backgroundColor="#e11c2e";
 }
 
+// Creating the checkbox for choosing AH technique
 function createBox()
 {
-    var checkbox = document.createElement("div");
-    document.body.appendChild(checkbox);
+    var checkboxDiv = document.createElement("div");
+    checkboxDiv.id = "checkbox-div";
+    checkboxDiv.style.position = "fixed";
+    checkboxDiv.style.right = "30px";
+    checkboxDiv.style.bottom = "100px";
+    
+    var checkbox = document.createElement("select");
+    checkbox.id = "checkbox";
+    checkboxDiv.appendChild(checkbox);
+
+    // Adding options
+    var options = ["Hiding","Hiding + Annotation"];
+    for (a = 0; a < options.length; a++)
+    {
+        var option = document.createElement("option");
+        option.value = options[a];
+        option.text = options[a];
+        checkbox.appendChild(option);
+    }
+
+    document.body.appendChild(checkboxDiv);
+
+    // Saving option locally
+    if (typeof(Storage) !== "undefined")
+    {
+        if (localStorage.getItem("Option") === null)
+        {
+            localStorage.setItem("Option", "Hiding + Annotation");
+            checkbox.value = localStorage.getItem("Option");
+        }
+        else
+        {
+            checkbox.value = localStorage.getItem("Option");
+            localStorage.setItem("Option", checkbox.value);
+        }
+        
+    } 
+    else {}
 }
 
 // Checks headlines after loading new ones ("Load more stories" btn, or switching news tab)
-document.addEventListener('mouseup', function(e) {
+document.addEventListener('mouseup', function(e) 
+{
     e = e || window.event;
     var target = e.target || e.srcElement;
 
@@ -217,13 +294,34 @@ document.addEventListener('mouseup', function(e) {
         }
         else
         {
-            setTimeout(checkNewHeadlines, 10);
+            setTimeout(checkNewHeadlines, 20);
         }
     }
 
     if (target.classList.contains("load-more-btn") || target.classList.contains("tabs-desktop"))
     {
-        setTimeout(checkNewHeadlines, 10);
+        setTimeout(checkNewHeadlines, 20);
+    }
+    else {}
+
+}, false);
+
+// Changing between techniques
+document.addEventListener('click', function(e) 
+{
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (target.parentNode.id == "checkbox")
+    {
+        if (typeof(Storage) !== "undefined")
+        {
+            localStorage.setItem("Option", checkbox.value);
+
+        }
+        else {}
+
+        getHeadlineWords();
     }
     else {}
 
@@ -231,7 +329,8 @@ document.addEventListener('mouseup', function(e) {
 
 
 // Get clicked headline
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function(e) 
+{
     e = e || window.event;
     var target = e.target || e.srcElement;
     var text = target.textContent || target.innerText; 
@@ -258,16 +357,17 @@ function storeWords(str)
 
 function storeWords2(str2)
 {
-
+    
     var headlineWords = cleanHeadline(str2);
-
+    
     // Convert top words local storage string to array if storage is not null
     if (typeof localStorage !== 'undefined')
     {
-        if (localStorage.getItem("topWords"))
+        if (localStorage.getItem("topWords") !== null)
         {
             topWords = JSON.parse(localStorage.getItem("topWords"));
         }
+        else {}
     } else {}
     
     
@@ -304,12 +404,13 @@ function storeWords2(str2)
             localStorage.setItem("topWords", JSON.stringify(topWords)); // Need to convert array to string / vice versa when storing retrieving top words
         } else {}
 
-        console.table(topWords);
     }
 
 }
 
 if (document.readyState == "complete")
 {
+    createBox();
     getHeadlineWords();
+    
 }
