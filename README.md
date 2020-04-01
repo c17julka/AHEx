@@ -9,5 +9,5 @@ Examensarbete
 3. Open Code Injector and click "Add rule" --> "Files"
 4. Paste in https://rawgit.com/kristopolous/Porter-Stemmer/master/PorterStemmer1980.min.js
 5. Paste in https://cdn.jsdelivr.net/gh/c17julka/AHEx@master/wordgroup.js
-6. Change host to "globalnews\.ca"
+6. Change host to "globalnews\\.ca"
 7. You're done! Go to www.globalnews.ca to see the script in action
