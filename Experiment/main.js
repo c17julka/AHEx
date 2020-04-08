@@ -1,6 +1,6 @@
 var timeline = [];
 
-var scale1 = [
+var scale = [
     "-3",
     "-2",
     "-1",
@@ -12,25 +12,25 @@ var scale1 = [
 
 var initial_questions = [
     {
-        prompt: "How often do you browse the internet?", name: "internet", labels: scale1
+        prompt: "How often do you browse the internet?", name: "internet", labels: scale
     },
     {
-        prompt: "How often do you visit news websites?", name: "news", labels: scale1
+        prompt: "How often do you visit news websites?", name: "news", labels: scale
     }
 ];
 
 var image_questions = [
     {
-        prompt: "I like the appearance of the articles", name: "appearance", labels: scale1
+        prompt: "I like the appearance of the articles", name: "appearance", labels: scale
     },
     {
-        prompt: "The readability is clear", name: "readability", labels: scale1
+        prompt: "The readability is clear", name: "readability", labels: scale
     },
     {
-        prompt: "From first glance, I know which article I want to read", name: "readability2", labels: scale1
+        prompt: "From first glance, I know which article I want to read", name: "readability2", labels: scale
     },
     {
-        prompt: "I would browse this website in the future", name: "future", labels: scale1
+        prompt: "I would browse this website in the future", name: "future", labels: scale
     }
     
 ];
@@ -76,13 +76,32 @@ var main_q = {
 };
 timeline.push(main_q);
 
+var final = {
+    type: 'html-button-response',
+    stimulus: 'End of survey',
+    choices: ['End']
+
+}
+timeline.push(final);
+
+
 var images = [
     'imgs/1.png',
     'imgs/2.png',
     'imgs/3.png'
 ];
 
+function saveData(name, data){
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'index.php'); // 'write_data.php' is the path to the php file described above.
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({filename: name, filedata: data}));
+  }
+
 jsPsych.init({
     timeline: timeline,
-    preload_images: images
+    preload_images: images,
+    on_finish: function() {
+        saveData("experiment_data", jsPsych.data.get().csv());
+    }
 });
