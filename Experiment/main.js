@@ -40,6 +40,7 @@ var instruct_pages = [
     '<p>Your answers and the response time of your answers will be stored and be used in the purpose of a thesis. If you do not wish to participate, you are free to cancel the survey whenever you want.<br>Press "Next" to start the survey.</p>'
 ];
 
+// Instructions
 var instructions = {
     type: 'instructions',
     pages: instruct_pages,
@@ -47,6 +48,7 @@ var instructions = {
 };
 timeline.push(instructions);
 
+// Experience questions
 var trial = {
     type: 'survey-likert',
     questions: initial_questions,
@@ -54,6 +56,7 @@ var trial = {
 };
 timeline.push(trial);
 
+// Main questions
 var main_q = {
     timeline: [
         {
@@ -76,6 +79,7 @@ var main_q = {
 };
 timeline.push(main_q);
 
+// End
 var final = {
     type: 'html-button-response',
     stimulus: 'End of survey',
@@ -84,16 +88,17 @@ var final = {
 }
 timeline.push(final);
 
-
+// Imgs preload
 var images = [
     'imgs/1.png',
     'imgs/2.png',
     'imgs/3.png'
 ];
 
-function saveData(name, data){
+// Save data
+function saveData(name, data) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'index.php'); // 'write_data.php' is the path to the php file described above.
+    xhr.open('POST', 'index.php'); 
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({filename: name, filedata: data}));
   }
@@ -102,6 +107,7 @@ jsPsych.init({
     timeline: timeline,
     preload_images: images,
     on_finish: function() {
-        saveData("experiment_data", jsPsych.data.get().csv());
+        var filename = Date.now();
+        saveData(filename, jsPsych.data.get().csv());
     }
 });
