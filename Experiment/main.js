@@ -109,5 +109,6 @@ jsPsych.init({
     on_finish: function() {
         var filename = Date.now();
         saveData(filename, jsPsych.data.get().csv());
+        jsPsych.data.displayData();
     }
 });
