@@ -82,8 +82,8 @@ timeline.push(main_q);
 // End
 var final = {
     type: 'html-button-response',
-    stimulus: 'End of survey',
-    choices: ['End']
+    stimulus: 'Click the button to submit your result',
+    choices: ['Submit']
 
 }
 timeline.push(final);
