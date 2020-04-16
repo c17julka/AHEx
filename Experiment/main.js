@@ -82,8 +82,8 @@ timeline.push(main_q);
 // End
 var final = {
     type: 'html-button-response',
-    stimulus: 'End of survey',
-    choices: ['End']
+    stimulus: 'Click the button to submit your result',
+    choices: ['Submit']
 
 }
 timeline.push(final);
@@ -96,26 +96,30 @@ var images = [
 ];
 
 // Add id
-var subject_id = Date.now();
+var subject_id = jsPsych.randomization.randomID(20);
 
 jsPsych.data.addProperties({
-    timeid: subject_id
+    subjectId: subject_id
 });
 
-// Save data
-function saveData(name, data) {
+// Save data to put in db
+function saveData() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'index.php'); 
+    xhr.open('POST', 'write_data.php'); // change 'write_data.php' to point to php script.
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({filename: name, filedata: data}));
+    xhr.onload = function() {
+      if(xhr.status == 200){
+        var response = JSON.parse(xhr.responseText);
+        console.log(response.success);
+      }
+    };
+    xhr.send(jsPsych.data.get().json());
   }
 
 jsPsych.init({
     timeline: timeline,
     preload_images: images,
     on_finish: function() {
-        var filename = Date.now();
-        saveData(filename, jsPsych.data.get().csv());
-        jsPsych.data.displayData();
+        saveData();
     }
 });
