@@ -95,6 +95,13 @@ var images = [
     'imgs/3.png'
 ];
 
+// Add id
+var subject_id = Date.now();
+
+jsPsych.data.addProperties({
+    timeid: subject_id
+});
+
 // Save data
 function saveData(name, data) {
     var xhr = new XMLHttpRequest();
