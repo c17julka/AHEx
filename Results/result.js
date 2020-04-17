@@ -340,18 +340,67 @@ var question_2_lowNews = [];
 var question_3_lowNews = [];
 var question_4_lowNews = [];
 
-// for (y=1;y<5;y++)
-// {
-//     for (i=0;i<json.length;i++) 
-//     {
-//         if(json[i].trial_index == 1 && (json[1]).responses.internet > 3)
-//         {
-//             this["question_"+u+"highInt"].push(json[i].rt);
+for (y=1;y<5;y++)
+{
+    for (var i=0;i<json.length;i++) 
+    {
+        // High / low internet usage
+        if (json[i].responses.hasOwnProperty("internet") && json[i].responses.internet > 3)
+        {
+          for (var v=0;v<json.length;v++)
+          {
+            if (json[i].subjectId == json[v].subjectId && json[v].trial_index == y)
+            {
+              
+              this["question_"+y+"_highInt"].push(json[v].rt);
+            }
+            else {}
+          }
             
-//         }
+        }
+        else if (json[i].responses.hasOwnProperty("internet") && json[i].responses.internet <= 3)
+        {
+          for (var v=0;v<json.length;v++)
+          {
+            if (json[i].subjectId == json[v].subjectId && json[v].trial_index == y)
+            {
+              
+              this["question_"+y+"_lowInt"].push(json[v].rt);
+            }
+            else {}
+          }
+        }
+        else {}
         
-//     }
-// }
+        // High / low news usage
+        if (json[i].responses.hasOwnProperty("news") && json[i].responses.news > 3)
+        {
+          for (var v=0;v<json.length;v++)
+          {
+            if (json[i].subjectId == json[v].subjectId && json[v].trial_index == y)
+            {
+              
+              this["question_"+y+"_highNews"].push(json[v].rt);
+            }
+            else {}
+          }
+        }
+        else if (json[i].responses.hasOwnProperty("news") && json[i].responses.news <= 3)
+        {
+          for (var v=0;v<json.length;v++)
+          {
+            if (json[i].subjectId == json[v].subjectId && json[v].trial_index == y)
+            {
+              
+              this["question_"+y+"_lowNews"].push(json[v].rt);
+            }
+            else {}
+          }
+        }
+        else {}
+        
+    }
+}
 
 
 
