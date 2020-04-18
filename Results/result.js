@@ -298,7 +298,7 @@ var question_4 = [];
 
 // Mean times general
 
-for (u=1;u<5;u++)
+for (var u=1;u<5;u++)
 {
     for (i=0;i<json.length;i++) 
     {
@@ -311,9 +311,9 @@ for (u=1;u<5;u++)
     }
 }
 
-for (x=1;x<5;x++)
+for (var x=1;x<5;x++)
 {
-    var divide = question_1.length + 1;
+    var divide = question_1.length;
     this["total_"+x] = this["question_"+x].reduce((a, b) => a + b, 0);
     this["mt_"+x] = this["total_"+x] / divide;
 }
@@ -340,7 +340,7 @@ var question_2_lowNews = [];
 var question_3_lowNews = [];
 var question_4_lowNews = [];
 
-for (y=1;y<5;y++)
+for (var y=1;y<5;y++)
 {
     for (var i=0;i<json.length;i++) 
     {
@@ -402,58 +402,73 @@ for (y=1;y<5;y++)
     }
 }
 
+// Mean times high / low usages
 
+for (var x=1;x<5;x++)
+{
+    
+    this["total_highInt_"+x] = this["question_"+x+"_highInt"].reduce((a, b) => a + b, 0);
+    this["mt_highInt_"+x] = this["total_highInt_"+x] / this["question_"+x+"_highInt"].length;
 
-// for (x=1;x<5;x++)
-// {
-//     var divide = question_1.length + 1;
-//     this["total_"+x] = this["question_"+x].reduce((a, b) => a + b, 0);
-//     this["mt_"+x] = this["total_"+x] / divide;
-// }
+    this["total_lowInt_"+x] = this["question_"+x+"_lowInt"].reduce((a, b) => a + b, 0);
+    this["mt_lowInt_"+x] = this["total_lowInt_"+x] / this["question_"+x+"_lowInt"].length;
+
+    this["total_highNews_"+x] = this["question_"+x+"_highNews"].reduce((a, b) => a + b, 0);
+    this["mt_highNews_"+x] = this["total_highNews_"+x] / this["question_"+x+"_highNews"].length;
+
+    this["total_lowNews_"+x] = this["question_"+x+"_lowNews"].reduce((a, b) => a + b, 0);
+    this["mt_lowNews_"+x] = this["total_lowNews_"+x] / this["question_"+x+"_lowNews"].length;
+}
+
 
 // Charts
 
-// var ctx1 = document.getElementById('totalChart').getContext('2d');
+var ctx1 = document.getElementById('totalChart').getContext('2d');
 var ctx2 = document.getElementById('meanChart').getContext('2d');
 
-// var totalTime = new Chart(ctx1, {
-//     type: 'bar',
-//     data: {
-//         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
-//         datasets: [{
-//             label: 'Total MS Spent',
-//             data: [total_2, total_3, total_4],
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255, 99, 132, 1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)'
-//             ],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         scales: {
-//             yAxes: [{
-//                 ticks: {
-//                     beginAtZero: true,
-//                     suggestedMax: 200000
-//                 }
-//             }]
-//         }
-//     }
-// });
+var ctx3 = document.getElementById('meanCharthighInt').getContext('2d');
+var ctx4 = document.getElementById('meanChartlowInt').getContext('2d');
+var ctx5 = document.getElementById('meanCharthighNews').getContext('2d');
+var ctx6 = document.getElementById('meanChartlowNews').getContext('2d');
+
+var totalTime = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
+        datasets: [{
+            label: 'Total MS Spent - All',
+            data: [total_2, total_3, total_4],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    suggestedMax: 200000
+                }
+            }]
+        }
+    }
+});
 
 var meanTime = new Chart(ctx2, {
     type: 'bar',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
-            label: 'MT MS Spent',
+            label: 'MT MS Spent - All',
             data: [mt_2, mt_3, mt_4],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -479,13 +494,13 @@ var meanTime = new Chart(ctx2, {
     }
 });
 
-var meanTimeHighInternet = new Chart(ctx2, {
+var meanTimeHighInt = new Chart(ctx3, {
     type: 'bar',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
-            label: 'MT MS Spent',
-            data: [mt_2, mt_3, mt_4],
+            label: 'MT MS Spent - High Internet Usage',
+            data: [mt_highInt_2, mt_highInt_3, mt_highInt_4],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -510,13 +525,13 @@ var meanTimeHighInternet = new Chart(ctx2, {
     }
 });
 
-var meanTimeHighNews = new Chart(ctx2, {
+var meanTimelowInt = new Chart(ctx4, {
     type: 'bar',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
-            label: 'MT MS Spent',
-            data: [mt_2, mt_3, mt_4],
+            label: 'MT MS Spent - Low Internet Usage',
+            data: [mt_lowInt_2, mt_lowInt_3, mt_lowInt_4],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -541,13 +556,13 @@ var meanTimeHighNews = new Chart(ctx2, {
     }
 });
 
-var meanTimeLowInternet = new Chart(ctx2, {
+var meanTimeHighNews = new Chart(ctx5, {
     type: 'bar',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
-            label: 'MT MS Spent',
-            data: [mt_2, mt_3, mt_4],
+            label: 'MT MS Spent - High News Usage',
+            data: [mt_highNews_2, mt_highNews_3, mt_highNews_4],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -572,13 +587,13 @@ var meanTimeLowInternet = new Chart(ctx2, {
     }
 });
 
-var meanTimeLowNews = new Chart(ctx2, {
+var meanTimeLowNews = new Chart(ctx6, {
     type: 'bar',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
-            label: 'MT MS Spent',
-            data: [mt_2, mt_3, mt_4],
+            label: 'MT MS Spent - Low News Usage',
+            data: [mt_lowNews_2, mt_lowNews_3, mt_lowNews_4],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
