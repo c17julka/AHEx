@@ -481,6 +481,16 @@ var json = [
   }
 ]
 
+// Function to calculate minimum val in array
+
+Array.min = function(array){
+  return Math.min.apply( Math, array );
+};
+
+Array.max = function(array){
+  return Math.max.apply( Math, array );
+};
+
 // Variables for data
 
 var question_1 = [];
@@ -974,12 +984,26 @@ var totalTime = new Chart(ctx1, {
 });
 
 var meanTime = new Chart(ctx2, {
-    type: 'bar',
+    type: 'barWithErrorBars',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
             label: 'MT MS Spent - All',
-            data: [mt_2, mt_3, mt_4],
+            data: [{
+              y: mt_2,
+              yMin: Array.min(question_2),
+              yMax: Array.max(question_2),
+            },
+            {
+              y: mt_3,
+              yMin: Array.min(question_3),
+              yMax: Array.max(question_3),
+            },
+            {
+              y: mt_4,
+              yMin: Array.min(question_4),
+              yMax: Array.max(question_4),
+            }],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -1006,12 +1030,26 @@ var meanTime = new Chart(ctx2, {
 });
 
 var meanTimeHighInt = new Chart(ctx3, {
-    type: 'bar',
+    type: 'barWithErrorBars',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
             label: 'MT MS Spent - High Internet Usage',
-            data: [mt_highInt_2, mt_highInt_3, mt_highInt_4],
+            data: [{
+              y: mt_highInt_2,
+              yMin: Array.min(question_2_highInt),
+              yMax: Array.max(question_2_highInt),
+            },
+            {
+              y: mt_highInt_3,
+              yMin: Array.min(question_3_highInt),
+              yMax: Array.max(question_3_highInt),
+            },
+            {
+              y: mt_highInt_4,
+              yMin: Array.min(question_4_highInt),
+              yMax: Array.max(question_4_highInt),
+            }],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -1038,12 +1076,26 @@ var meanTimeHighInt = new Chart(ctx3, {
 });
 
 var meanTimelowInt = new Chart(ctx4, {
-    type: 'bar',
+    type: 'barWithErrorBars',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
             label: 'MT MS Spent - Low Internet Usage',
-            data: [mt_lowInt_2, mt_lowInt_3, mt_lowInt_4],
+            data: [{
+              y: mt_lowInt_2,
+              yMin: Array.min(question_2_lowInt),
+              yMax: Array.max(question_2_lowInt),
+            },
+            {
+              y: mt_lowInt_3,
+              yMin: Array.min(question_3_lowInt),
+              yMax: Array.max(question_3_lowInt),
+            },
+            {
+              y: mt_lowInt_4,
+              yMin: Array.min(question_4_lowInt),
+              yMax: Array.max(question_4_lowInt),
+            }],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -1070,12 +1122,26 @@ var meanTimelowInt = new Chart(ctx4, {
 });
 
 var meanTimeHighNews = new Chart(ctx5, {
-    type: 'bar',
+    type: 'barWithErrorBars',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
             label: 'MT MS Spent - High News Usage',
-            data: [mt_highNews_2, mt_highNews_3, mt_highNews_4],
+            data: [{
+              y: mt_highNews_2,
+              yMin: Array.min(question_2_highNews),
+              yMax: Array.max(question_2_highNews),
+            },
+            {
+              y: mt_highNews_3,
+              yMin: Array.min(question_3_highNews),
+              yMax: Array.max(question_3_highNews),
+            },
+            {
+              y: mt_highNews_4,
+              yMin: Array.min(question_4_highNews),
+              yMax: Array.max(question_4_highNews),
+            }],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -1102,12 +1168,26 @@ var meanTimeHighNews = new Chart(ctx5, {
 });
 
 var meanTimeLowNews = new Chart(ctx6, {
-    type: 'bar',
+    type: 'barWithErrorBars',
     data: {
         labels: ['No AH', 'AH Hiding', 'AH Hiding + Annotation'],
         datasets: [{
             label: 'MT MS Spent - Low News Usage',
-            data: [mt_lowNews_2, mt_lowNews_3, mt_lowNews_4],
+            data: [{
+              y: mt_lowNews_2,
+              yMin: Array.min(question_2_lowNews),
+              yMax: Array.max(question_2_lowNews),
+            },
+            {
+              y: mt_lowNews_3,
+              yMin: Array.min(question_3_lowNews),
+              yMax: Array.max(question_3_lowNews),
+            },
+            {
+              y: mt_lowNews_4,
+              yMin: Array.min(question_4_lowNews),
+              yMax: Array.max(question_4_lowNews),
+            }],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -1264,3 +1344,4 @@ var resultSurvey4 = new Chart(ctx10, {
       }
   }
 });
+
