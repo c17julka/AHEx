@@ -3,6 +3,8 @@ Adaptive Hypermedia Experiment
 
 Examensarbete
 
+*WARNING: This script does not work on the new, redesigned version of Global News*
+
 ## Instructions on how to use the script:
 1. Download and open Mozilla Firefox
 2. Download Code Injector from Firefox Browser Add-Ons (https://addons.mozilla.org/en-US/firefox/addon/codeinjector/)
