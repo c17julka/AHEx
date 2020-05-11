@@ -36,8 +36,12 @@ var image_questions = [
 ];
 
 var instruct_pages = [
-    '<p>This survey will first ask you questions about your internet and news experience. Then, it will show you 3 different pictures and questions about them.</p>',
+    '<p>This survey will first ask you questions about your internet and news experience. Then, it will show you 3 different pictures and questions about them. It is recommended to answer the survey on a desktop computer or a laptop.</p>',
     '<p>Your answers and the response time of your answers will be stored and be used in the purpose of a thesis. If you do not wish to participate, you are free to cancel the survey whenever you want.<br>Press "Next" to start the survey.</p>'
+];
+
+var preparation_pages = [
+    '<p>The image below is an example image of what questions you will be answering in the upcoming sections. Read them before moving on. You can not interact with this image.</p><img src="imgs/exempel.png" border="1px black solid" height="500px">'
 ];
 
 // Instructions
@@ -55,6 +59,13 @@ var trial = {
     preamble: '<p>Rate your previous experiences on a scale of -3 to 3<br>(-3 = Very rarely, 0 = Neutral, 3 = Very often)</p>'
 };
 timeline.push(trial);
+
+var preparation = {
+    type: 'instructions',
+    pages: preparation_pages,
+    show_clickable_nav: true
+};
+timeline.push(preparation);
 
 // Main questions
 var main_q = {
