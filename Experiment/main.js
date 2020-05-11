@@ -37,6 +37,8 @@ var image_questions = [
 
 var instruct_pages = [
     '<p>This survey will first ask you questions about your internet and news experience. Then, it will show you 3 different pictures and questions about them. It is recommended to answer the survey on a desktop computer or a laptop.</p>',
+    '<p>The image below is an example image of what questions you will be answering in the upcoming section. These questions are about your previous experiences. Read these questions before moving on. You can not interact with this image.</p><img src="imgs/exempel1.png" border="1px black solid" height="300px">',
+    '<p>The image below is an example image of what questions you will be answering in the upcoming section, after the questions about your experiences. The questions will be alongside 3 different pictures of website designs. Read these questions before moving on. You can not interact with this image.</p><img src="imgs/exempel.png" border="1px black solid" height="500px">',
     '<p>Your answers and the response time of your answers will be stored and be used in the purpose of a thesis. If you do not wish to participate, you are free to cancel the survey whenever you want.<br>Press "Next" to start the survey.</p>'
 ];
 
@@ -60,12 +62,12 @@ var trial = {
 };
 timeline.push(trial);
 
-var preparation = {
-    type: 'instructions',
-    pages: preparation_pages,
-    show_clickable_nav: true
-};
-timeline.push(preparation);
+// var preparation = {
+//     type: 'instructions',
+//     pages: preparation_pages,
+//     show_clickable_nav: true
+// };
+// timeline.push(preparation);
 
 // Main questions
 var main_q = {
@@ -113,6 +115,9 @@ jsPsych.data.addProperties({
     subjectId: subject_id
 });
 
+// Counting whenever participant exits / reenteres window
+var event_counter = 0;
+
 // Save data to put in db
 function saveData() {
     var xhr = new XMLHttpRequest();
@@ -125,12 +130,21 @@ function saveData() {
       }
     };
     xhr.send(jsPsych.data.get().json());
-  }
+}
 
 jsPsych.init({
     timeline: timeline,
     preload_images: images,
+    on_interaction_data_update: function()
+    {
+        event_counter++;
+    },
     on_finish: function() {
+        jsPsych.data.addProperties({
+            eventCounter: event_counter
+        });
+        
         saveData();
+        alert("Thank you for your time.");
     }
 });
