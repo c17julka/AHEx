@@ -3106,7 +3106,7 @@ for (var u=1;u<5;u++)
 
 // Removal of spikes
 
-// Bar
+// Bar (sorted)
 
 // question_2.splice(23, 6);
 // question_2.splice(0, 1);
@@ -3117,10 +3117,19 @@ for (var u=1;u<5;u++)
 // question_4.splice(0, 2);
 
 // Line
-// question_2.splice(28, 1);
-// question_2.splice(16, 2);
-// question_2.splice(13, 1);
-// question_2.splice(0, 2);
+question_2.splice(28, 1);
+question_2.splice(16, 2);
+question_2.splice(13, 1);
+question_2.splice(8, 1);
+question_2.splice(0, 2);
+
+question_3.splice(26, 1);
+question_3.splice(22, 2);
+question_3.splice(16, 2);
+question_3.splice(1, 1);
+
+question_4.splice(23, 1);
+question_4.splice(7, 1);
 
 for (var x=1;x<5;x++)
 {
