@@ -3617,7 +3617,7 @@ var meanTime = new Chart(ctx2, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3663,7 +3663,7 @@ var meanTimeHighInt = new Chart(ctx3, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3709,7 +3709,7 @@ var meanTimelowInt = new Chart(ctx4, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3755,7 +3755,7 @@ var meanTimeHighNews = new Chart(ctx5, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3801,7 +3801,7 @@ var meanTimeLowNews = new Chart(ctx6, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
