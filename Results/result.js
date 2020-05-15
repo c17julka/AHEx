@@ -3092,20 +3092,39 @@ for (var u=1;u<5;u++)
     {
         if(json[i].trial_index == u)
         {
+          if (json[i].eventCounter < 10)
+          {
             this["question_"+u].push(json[i].rt);
-            //trial.push(json[i].rt);
+          }
+            
         }
         
     }
 
-    this["question_"+u] = this["question_"+u].sort(compare);
+    //this["question_"+u] = this["question_"+u].sort(compare);
 }
 
+// Removal of spikes
 
+// Bar
+
+// question_2.splice(23, 6);
+// question_2.splice(0, 1);
+
+// question_3.splice(26, 3);
+// question_3.splice(0, 3);
+
+// question_4.splice(0, 2);
+
+// Line
+// question_2.splice(28, 1);
+// question_2.splice(16, 2);
+// question_2.splice(13, 1);
+// question_2.splice(0, 2);
 
 for (var x=1;x<5;x++)
 {
-    var divide = question_1.length;
+    var divide = this["question_"+x].length;
     this["total_"+x] = this["question_"+x].reduce((a, b) => a + b, 0);
     this["mt_"+x] = this["total_"+x] / divide;
 }
@@ -3136,6 +3155,8 @@ for (var y=1;y<5;y++)
 {
     for (var i=0;i<json.length;i++) 
     {
+      if (json[i].eventCounter < 10)
+      {
         // High / low internet usage
         if (json[i].responses.hasOwnProperty("internet") && json[i].responses.internet > 3)
         {
@@ -3190,6 +3211,8 @@ for (var y=1;y<5;y++)
           }
         }
         else {}
+      }
+        
         
     }
 
@@ -3198,6 +3221,11 @@ for (var y=1;y<5;y++)
     this["question_"+y+"_highNews"] = this["question_"+y+"_highNews"].sort(compare);
     this["question_"+y+"_lowNews"] = this["question_"+y+"_lowNews"].sort(compare);
 }
+
+// Removal of spikes
+
+question_2_highNews.splice(17, 3);
+question_2_highNews.splice(0, 1);
 
 // Mean times high / low usages
 
@@ -3545,6 +3573,11 @@ var ctx7 = document.getElementById('resultChart1').getContext('2d');
 var ctx8 = document.getElementById('resultChart2').getContext('2d');
 var ctx9 = document.getElementById('resultChart3').getContext('2d');
 var ctx10 = document.getElementById('resultChart4').getContext('2d');
+
+var ctx11 = document.getElementById('lineChart').getContext('2d');
+var ctx12 = document.getElementById('lineChart2').getContext('2d');
+var ctx13 = document.getElementById('lineChart3').getContext('2d');
+var ctx14 = document.getElementById('lineChart4').getContext('2d');
 
 var totalTime = new Chart(ctx1, {
     type: 'bar',
@@ -3940,3 +3973,186 @@ var resultSurvey4 = new Chart(ctx10, {
   }
 });
 
+var len = [];
+for (var i = 0; i < question_1.length; i++)
+{
+  len.push(i + 1);
+}
+
+var stackedLine = new Chart(ctx11, {
+  type: 'line',
+  data: {
+    labels: len,
+    datasets: [{
+      label: 'No AH',
+      data: question_2,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 3,
+      fill: false
+    },
+    {
+      label: 'AH Hiding',
+      data: question_3,
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 3,
+      fill: false
+    },
+    {
+      label: 'AH Hiding + Annotation',
+      data: question_4,
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 3,
+      fill: false
+    }
+  ]
+},
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {        
+                suggestedMax: 90000,
+              },
+              stacked: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'MS'
+              }
+          }],
+          xAxes: [{
+            stacked: false,
+            scaleLabel: {
+              display: true,
+              labelString: 'Result count'
+            }
+          }]
+      }
+  }
+});
+
+var len2 = [];
+for (var i = 0; i < question_2.length; i++)
+{
+  len2.push(i + 1);
+}
+
+var stackedLine2 = new Chart(ctx12, {
+  type: 'line',
+  data: {
+    labels: len2,
+    datasets: [{
+      label: 'No AH',
+      data: question_2,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 3,
+      fill: false
+    }
+  ]
+},
+  options: {
+      scales: {
+          yAxes: [{
+            ticks: {        
+              suggestedMax: 90000,
+            },
+              stacked: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'MS'
+              }
+          }],
+          xAxes: [{
+            stacked: false,
+            scaleLabel: {
+              display: true,
+              labelString: 'Result count'
+            }
+          }]
+      }
+  }
+});
+
+var len3 = [];
+for (var i = 0; i < question_3.length; i++)
+{
+  len3.push(i + 1);
+}
+
+var stackedLine3 = new Chart(ctx13, {
+  type: 'line',
+  data: {
+    labels: len3,
+    datasets: [
+    {
+      label: 'AH Hiding',
+      data: question_3,
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 3,
+      fill: false
+    }
+  ]
+},
+  options: {
+      scales: {
+          yAxes: [{
+            ticks: {        
+              suggestedMax: 90000,
+            },
+              stacked: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'MS'
+              }
+          }],
+          xAxes: [{
+            stacked: false,
+            scaleLabel: {
+              display: true,
+              labelString: 'Result count'
+            }
+          }]
+      }
+  }
+});
+
+var len4 = [];
+for (var i = 0; i < question_4.length; i++)
+{
+  len4.push(i + 1);
+}
+
+var stackedLine4 = new Chart(ctx14, {
+  type: 'line',
+  data: {
+    labels: len4,
+    datasets: [
+    {
+      label: 'AH Hiding + Annotation',
+      data: question_4,
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 3,
+      fill: false
+    }
+  ]
+},
+  options: {
+      scales: {
+          yAxes: [{
+            ticks: {        
+              suggestedMax: 90000,
+            },
+              stacked: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'MS'
+              }
+          }],
+          xAxes: [{
+            stacked: false,
+            scaleLabel: {
+              display: true,
+              labelString: 'Result count'
+            }
+          }]
+      }
+  }
+});
