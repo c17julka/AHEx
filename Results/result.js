@@ -3225,16 +3225,30 @@ for (var y=1;y<5;y++)
         
     }
 
-    this["question_"+y+"_highInt"] = this["question_"+y+"_highInt"].sort(compare);
-    this["question_"+y+"_lowInt"] = this["question_"+y+"_lowInt"].sort(compare);
-    this["question_"+y+"_highNews"] = this["question_"+y+"_highNews"].sort(compare);
-    this["question_"+y+"_lowNews"] = this["question_"+y+"_lowNews"].sort(compare);
+    // this["question_"+y+"_highInt"] = this["question_"+y+"_highInt"].sort(compare);
+    // this["question_"+y+"_lowInt"] = this["question_"+y+"_lowInt"].sort(compare);
+    // this["question_"+y+"_highNews"] = this["question_"+y+"_highNews"].sort(compare);
+    // this["question_"+y+"_lowNews"] = this["question_"+y+"_lowNews"].sort(compare);
 }
 
 // Removal of spikes
 
-question_2_highNews.splice(17, 3);
+question_2_highNews.splice(18, 1);
+question_2_highNews.splice(5, 1);
 question_2_highNews.splice(0, 1);
+
+question_3_highNews.splice(13, 2);
+question_3_highNews.splice(0, 1);
+
+question_4_highNews.splice(14, 1);
+question_4_highNews.splice(4, 1);
+
+question_2_lowNews.splice(7, 2);
+question_2_lowNews.splice(4, 1);
+question_2_lowNews.splice(0, 1);
+
+question_3_lowNews.splice(7, 3);
+
 
 // Mean times high / low usages
 
@@ -3659,7 +3673,7 @@ var meanTime = new Chart(ctx2, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3705,7 +3719,7 @@ var meanTimeHighInt = new Chart(ctx3, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3751,7 +3765,7 @@ var meanTimelowInt = new Chart(ctx4, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3797,7 +3811,7 @@ var meanTimeHighNews = new Chart(ctx5, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3843,7 +3857,7 @@ var meanTimeLowNews = new Chart(ctx6, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 70000
+                    suggestedMax: 140000
                 }
             }]
         }
@@ -3983,7 +3997,7 @@ var resultSurvey4 = new Chart(ctx10, {
 });
 
 var len = [];
-for (var i = 0; i < question_1.length; i++)
+for (var i = 0; i < question_1_lowNews.length; i++)
 {
   len.push(i + 1);
 }
@@ -3994,21 +4008,21 @@ var stackedLine = new Chart(ctx11, {
     labels: len,
     datasets: [{
       label: 'No AH',
-      data: question_2,
+      data: question_2_lowNews,
       borderColor: 'rgba(255, 99, 132, 1)',
       borderWidth: 3,
       fill: false
     },
     {
       label: 'AH Hiding',
-      data: question_3,
+      data: question_3_lowNews,
       borderColor: 'rgba(54, 162, 235, 1)',
       borderWidth: 3,
       fill: false
     },
     {
       label: 'AH Hiding + Annotation',
-      data: question_4,
+      data: question_4_lowNews,
       borderColor: 'rgba(255, 206, 86, 1)',
       borderWidth: 3,
       fill: false
@@ -4039,7 +4053,7 @@ var stackedLine = new Chart(ctx11, {
 });
 
 var len2 = [];
-for (var i = 0; i < question_2.length; i++)
+for (var i = 0; i < question_2_lowNews.length; i++)
 {
   len2.push(i + 1);
 }
@@ -4050,7 +4064,7 @@ var stackedLine2 = new Chart(ctx12, {
     labels: len2,
     datasets: [{
       label: 'No AH',
-      data: question_2,
+      data: question_2_lowNews,
       borderColor: 'rgba(255, 99, 132, 1)',
       borderWidth: 3,
       fill: false
@@ -4081,7 +4095,7 @@ var stackedLine2 = new Chart(ctx12, {
 });
 
 var len3 = [];
-for (var i = 0; i < question_3.length; i++)
+for (var i = 0; i < question_3_lowNews.length; i++)
 {
   len3.push(i + 1);
 }
@@ -4093,7 +4107,7 @@ var stackedLine3 = new Chart(ctx13, {
     datasets: [
     {
       label: 'AH Hiding',
-      data: question_3,
+      data: question_3_lowNews,
       borderColor: 'rgba(54, 162, 235, 1)',
       borderWidth: 3,
       fill: false
@@ -4124,7 +4138,7 @@ var stackedLine3 = new Chart(ctx13, {
 });
 
 var len4 = [];
-for (var i = 0; i < question_4.length; i++)
+for (var i = 0; i < question_4_lowNews.length; i++)
 {
   len4.push(i + 1);
 }
@@ -4136,7 +4150,7 @@ var stackedLine4 = new Chart(ctx14, {
     datasets: [
     {
       label: 'AH Hiding + Annotation',
-      data: question_4,
+      data: question_4_lowNews,
       borderColor: 'rgba(255, 206, 86, 1)',
       borderWidth: 3,
       fill: false
