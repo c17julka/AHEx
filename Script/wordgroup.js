@@ -3,6 +3,23 @@ var topWords = [];
 var topWordsMaxLength = 30;
 var highestTopWords = 10;
 
+// The elements which fetches, finds and adapts headlines/articles. Change this according to where you are using the script
+// ___
+// The adapted elements
+const articlePicture = ".c-posts__media";
+const articleText = ".u-lineClamp";
+const articleHeadline = ".c-posts__headlineText";
+const articleTopic = ".c-posts__info--highlight";
+// ___
+// The fetched headlines
+const pageHeadlines = "c-posts__headlineText";
+// ___
+// The parent of article elements
+const articleParent = "c-posts__item";
+// ___
+// The button that loads more stories
+const loadButton = "#latestStories-button"
+
 // Remove stop words and stem headline sentences
 function cleanHeadline(str)
 {
@@ -40,7 +57,7 @@ function cleanHeadline(str)
 // Adapt all headlines on website
 function getHeadlineWords()
 {   
-    const headlines = document.getElementsByClassName("story-h");
+    const headlines = document.getElementsByClassName(pageHeadlines);
 
     // Checks all headlines on the website
     for (y = 1; y < headlines.length; y++)
@@ -102,14 +119,13 @@ function getHeadlineWords()
 // Fetches correct parent of selected headline
 function design(elem, groupNo)
 {
-    const className = "story-float-img";
-    const removeClassName = "story-sponsored";
+    const className = "c-posts__inner";
     const regex = new RegExp("\\b" + className + "\\b");
 
     var checkbox = document.getElementById("checkbox");
     
     do {
-        if (regex.exec(elem.className) && !elem.classList.contains(removeClassName))
+        if (regex.exec(elem.className))
         {
             if (checkbox.value == "Hiding + Annotation")
             {
@@ -153,85 +169,55 @@ function design(elem, groupNo)
 // Group 1 (low) relevance design
 function group1(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="none";
-    text.style.display="none";
-    headline.style.fontWeight="400";
-    subjectpic.style.backgroundColor="#808080";
+    elem.querySelector(articlePicture).style.display="none";
+    elem.querySelector(articleText).style.display="none";
+    elem.querySelector(articleHeadline).style.fontWeight="400";
+    elem.querySelector(articleTopic).style.color="#808080";
 }
 
 // Group 2 relevance design
 function group2(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="none";
-    text.style.display="block";
-    headline.style.fontWeight="400";
-    subjectpic.style.backgroundColor="#98585e";
+    elem.querySelector(articlePicture).style.display="none";
+    elem.querySelector(articleText).style.display="block";
+    elem.querySelector(articleHeadline).style.fontWeight="400";
+    elem.querySelector(articleTopic).style.color="#98585e";
 
 }
 
 // Group 3 (high) relevance design
 function group3(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt");
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="block";
-    text.style.display="block";
-    headline.style.fontWeight="800";
-    subjectpic.style.backgroundColor="#e11c2e";
+    elem.querySelector(articlePicture).style.display="block";
+    elem.querySelector(articleText).style.display="block";
+    elem.querySelector(articleHeadline).style.fontWeight="800";
+    elem.querySelector(articleTopic).style.color="#e11c2e";
 
 }
 
 // Groups with only hiding design
 function group1Hiding(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt"); 
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="none";
-    text.style.display="none";
-    headline.style.fontWeight="800";
-    subjectpic.style.backgroundColor="#e11c2e";
+    elem.querySelector(articlePicture).style.display="none";
+    elem.querySelector(articleText).style.display="none";
+    elem.querySelector(articleHeadline).style.fontWeight="800";
+    elem.querySelector(articleTopic).style.color="#e11c2e";
 }
 
 function group2Hiding(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt"); 
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="none";
-    text.style.display="block";
-    headline.style.fontWeight="800";
-    subjectpic.style.backgroundColor="#e11c2e";
+    elem.querySelector(articlePicture).style.display="none";
+    elem.querySelector(articleText).style.display="block";
+    elem.querySelector(articleHeadline).style.fontWeight="800";
+    elem.querySelector(articleTopic).style.color="#e11c2e";
 }
 
 function group3Hiding(elem)
 {
-    const pic = elem.querySelector(".story-img-link");
-    const text = elem.querySelector(".story-txt"); 
-    const headline = elem.querySelector(".story-h");
-    const subjectpic = elem.querySelector(".meta-bar-cat");
-
-    pic.style.display="block";
-    text.style.display="block";
-    headline.style.fontWeight="800";
-    subjectpic.style.backgroundColor="#e11c2e";
+    elem.querySelector(articlePicture).style.display="block";
+    elem.querySelector(articleText).style.display="block";
+    elem.querySelector(articleHeadline).style.fontWeight="800";
+    elem.querySelector(articleTopic).style.color="#e11c2e";
 }
 
 // Creating the checkbox for choosing AH technique
@@ -283,12 +269,12 @@ document.addEventListener('mouseup', function(e)
     e = e || window.event;
     var target = e.target || e.srcElement;
 
-    const length = document.getElementsByClassName("story-h").length;
+    const length = document.getElementsByClassName(articleParent).length;
 
     // Adapts new headlines after waiting for the new headlines to load
     function checkNewHeadlines()
     {
-        if (document.getElementsByClassName("story-h").length > length)
+        if (document.getElementsByClassName(articleParent).length > length)
         {
             getHeadlineWords();
         }
@@ -298,7 +284,7 @@ document.addEventListener('mouseup', function(e)
         }
     }
 
-    if (target.classList.contains("load-more-btn") || target.classList.contains("tabs-desktop"))
+    if (target == document.querySelector(loadButton))
     {
         setTimeout(checkNewHeadlines, 20);
     }
@@ -329,23 +315,23 @@ document.addEventListener('click', function(e)
 
 
 // Get clicked headline
-document.addEventListener('click', function(e) 
+document.addEventListener('auxclick', function(e) 
 {
     e = e || window.event;
     var target = e.target || e.srcElement;
-    var text = target.textContent || target.innerText; 
-
-    // Only retrieves text if clicked element's parent is certain class
-    const className = "story-h";
-    const regex = new RegExp("\\b" + className + "\\b");
     
-    do {
-        if (regex.exec(target.className))
+    do 
+    {
+        if (target.querySelector(articleHeadline))
         {
-            storeWords(text);
+            storeWords(target.querySelector(articleHeadline).innerText);
+            break;
         }
         target = target.parentNode;
-    } while (target) {}  
+               
+    } while (target) 
+    {
+    }  
     
 }, false);
 
